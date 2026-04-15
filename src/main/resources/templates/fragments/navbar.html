@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<nav th:fragment="navbar" class="navbar navbar-dark bg-dark d-md-none border-bottom border-secondary">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/dashboard">FinanceApp</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar" aria-controls="offcanvasSidebar">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </div>
+</nav>
+
+<!-- Offcanvas Sidebar for mobile -->
+<div class="offcanvas offcanvas-start bg-dark text-light" tabindex="-1" id="offcanvasSidebar" aria-labelledby="offcanvasSidebarLabel">
+    <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="offcanvasSidebarLabel">FinanceApp</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+        <!-- Re-using the sidebar fragment inside the offcanvas -->
+        <div th:replace="~{fragments/sidebar :: sidebar}"></div>
+    </div>
+</div>
+
+</body>
+</html>

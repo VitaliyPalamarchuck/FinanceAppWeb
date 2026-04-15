@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <title>Dashboard</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <h1 class="text-white mb-4">Dashboard</h1>
+
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="glass-card h-100">
+                <h5 class="text-light mb-3">Total Balance</h5>
+                <h2 class="fw-bold text-white">
+                    <span th:text="${userCurrency}">UAH</span>
+                    <span th:text="${totalBalance}">0.00</span>
+                </h2>
+                <p class="text-muted">Current account balance</p>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="glass-card h-100">
+                <h5 class="text-light mb-3">Monthly Income</h5>
+                <h2 class="fw-bold text-white">
+                    <span th:text="${userCurrency}">UAH</span>
+                    <span th:text="${income}">0.00</span>
+                </h2>
+                <p class="text-muted">for <span th:text="${#dates.format(#dates.createNow(), 'MMMM yyyy')}"></span></p>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="glass-card h-100">
+                <h5 class="text-light mb-3">Monthly Expenses</h5>
+                <h2 class="fw-bold text-white">
+                    <span th:text="${userCurrency}">UAH</span>
+                    <span th:text="${expenses}">0.00</span>
+                </h2>
+                <p class="text-muted">for <span th:text="${#dates.format(#dates.createNow(), 'MMMM yyyy')}"></span></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="glass-card mt-4">
+        <h4 class="text-white mb-3">Budget Status</h4>
+        <div th:if="${budgetStatus != null and !#lists.isEmpty(budgetStatus)}">
+            <div class="mb-3" th:each="status : ${budgetStatus}">
+                <div class="d-flex justify-content-between mb-1">
+                    <span class="text-white" th:text="${status.categoryName}">Category</span>
+                    <span class="text-muted">
+                        <span th:text="${userCurrency}">UAH</span>
+                        <span th:text="${status.spent + ' / ' + status.limit}">0 / 0</span>
+                    </span>
+                </div>
+
+                <div class="d-flex justify-content-between mb-1 text-muted small">
+                    <span th:text="${#temporals.format(status.periodStart, 'd MMMM yyyy')}">1 April 2026</span>
+                    <span th:text="${#temporals.format(status.periodEnd, 'd MMMM yyyy')}">30 April 2026</span>
+                </div>
+
+                <div class="progress budget-progress">
+                    <div class="progress-bar budget-progress-bar"
+                         role="progressbar"
+                         th:classappend="${status.percentage > 99 ? ' bg-danger' : (status.percentage > 80 ? ' bg-warning' : (status.percentage > 60 ? ' bg-info' : ' bg-primary'))}"
+                         th:style="'width: ' + ${status.percentage} + '%; background: ' + (${status.percentage} > 99 ? 'linear-gradient(90deg, #ef4444, #dc2626)' : (${status.percentage} > 80 ? 'linear-gradient(90deg, #f59e0b, #ef4444)' : (${status.percentage} > 60 ? 'linear-gradient(90deg, #38bdf8, #3b82f6)' : 'linear-gradient(90deg, #22c55e, #06b6d4)'))) + '; box-shadow: 0 0 10px rgba(255,255,255,0.08);'"
+                         th:attr="aria-valuenow=${status.percentage}, aria-valuemin='0', aria-valuemax='100'">
+                    </div>
+                </div>
+            </div>
+        </div>
+    <p class="text-muted mb-0" th:if="${budgetStatus == null or #lists.isEmpty(budgetStatus)}">No budget data available.</p>
+</div>

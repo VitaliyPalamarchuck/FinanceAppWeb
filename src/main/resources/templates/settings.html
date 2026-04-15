@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <title>Settings</title>
+</head>
+<body>
+
+<div layout:fragment="content">
+    <div class="container-fluid">
+        <h1 class="mb-4">Settings & Customization</h1>
+
+        <div th:if="${param.success}" class="alert alert-success">
+            Currency updated successfully.
+        </div>
+
+        <div class="row">
+            <div class="col-lg-8 mb-4">
+                <div class="glass-card p-4 h-100">
+                    <h5 class="mb-3">Manage Categories</h5>
+
+                    <form th:action="@{/settings/categories}" th:object="${newCategory}" method="post" class="mb-4">
+                        <div class="row g-3 align-items-end">
+                            <div class="col-md-4">
+                                <label for="name" class="form-label">Category Name</label>
+                                <input type="text" class="form-control" id="name" th:field="*{name}" required>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="type" class="form-label">Type</label>
+                                <select class="form-select" id="type" th:field="*{type}" required>
+                                    <option th:each="t : ${T(org.example.financeapp.model.Category.CategoryType).values()}"
+                                            th:value="${t}" th:text="${t.name()}"></option>
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <label for="color_hex" class="form-label">Color</label>
+                                <input type="color" class="form-control form-control-color" id="color_hex" th:field="*{color_hex}" value="#3b82f6">
+                            </div>
+                            <div class="col-md-3">
+                                <button type="submit" class="btn btn-primary w-100">Add Category</button>
+                            </div>
+                        </div>
+                    </form>
+
+                    <div class="table-responsive">
+                        <table class="table table-dark table-hover">
+                            <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Type</th>
+                                <th>Color</th>
+                                <th>Icon Class</th>
+                                <th>Actions</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="cat : ${categories}">
+                                <td th:text="${cat.name}">Groceries</td>
+                                <td>
+                                    <span class="badge"
+                                          th:classappend="${cat.type.name() == 'INCOME' ? 'bg-success' : 'bg-danger'}"
+                                          th:text="${cat.type.name()}">EXPENSE</span>
+                                </td>
+                                <td>
+                                    <span class="d-inline-block p-2 rounded" th:style="'background-color:' + ${cat.color_hex}"></span>
+                                    <span th:text="${cat.color_hex}">#22c55e</span>
+                                </td>
+                                <td th:text="${cat.icon_class}">fa-solid fa-cart-shopping</td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline-light"><i class="fa-solid fa-pencil"></i></button>
+                                    <button class="btn btn-sm btn-outline-danger"><i class="fa-solid fa-trash"></i></button>
+                                </td>
+                            </tr>
+                            <tr th:if="${#lists.isEmpty(categories)}">
+                                <td colspan="5" class="text-center text-white-50">No custom categories found.</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 mb-4">
+                <div class="glass-card p-4 h-100">
+                    <h5 class="mb-3">Preferences</h5>
+
+                    <form th:action="@{/settings/update-currency}" method="post">
+                        <div class="mb-3">
+                            <label for="currency" class="form-label">Default Currency</label>
+                            <select class="form-select" id="currency" name="currency">
+                                <option value="UAH" th:selected="${userCurrency == 'UAH'}">UAH (Ukrainian Hryvnia)</option>
+                                <option value="USD" th:selected="${userCurrency == 'USD'}">USD (United States Dollar)</option>
+                                <option value="EUR" th:selected="${userCurrency == 'EUR'}">EUR (Euro)</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Save Preferences</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

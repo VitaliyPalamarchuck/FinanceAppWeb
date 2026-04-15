@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <title>Recurring Payments</title>
+</head>
+<body>
+
+<div layout:fragment="content">
+    <div class="container-fluid">
+        <h1 class="mb-4 text-white">Recurring Payments</h1>
+
+        <div class="glass-card p-4 mb-4">
+            <h5 class="mb-3 text-white">Add Recurring Payment</h5>
+            <form th:action="@{/recurring}" th:object="${newTask}" method="post">
+                <div class="row g-3">
+                    <div class="col-md-3">
+                        <label class="form-label">Title</label>
+                        <input type="text" class="form-control" th:field="*{title}" required>
+                    </div>
+
+                    <div class="col-md-2">
+                        <label class="form-label">Amount</label>
+                        <input type="number" step="0.01" class="form-control" th:field="*{amount}" required>
+                    </div>
+
+                    <div class="col-md-2">
+                        <label class="form-label">Type</label>
+                        <select class="form-select" id="recurringType" th:field="*{type}" required>
+                            <option value="">-- Select --</option>
+                            <option th:each="t : ${T(org.example.financeapp.model.Transaction.TransactionType).values()}"
+                                    th:value="${t}" th:text="${t.name()}"></option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label class="form-label">Category</label>
+                        <select class="form-select" id="recurringCategory" th:field="*{category.id}" required>
+                            <option value="">-- Select --</option>
+                            <option th:each="cat : ${categories}"
+                                    th:value="${cat.id}"
+                                    th:text="${cat.name}"
+                                    th:attr="data-type=${cat.type.name()}"></option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-2">
+                        <label class="form-label">Currency</label>
+                        <select class="form-select" name="currency" required>
+                            <option value="UAH" th:selected="${userCurrency == 'UAH'}">UAH</option>
+                            <option value="USD" th:selected="${userCurrency == 'USD'}">USD</option>
+                            <option value="EUR" th:selected="${userCurrency == 'EUR'}">EUR</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-2">
+                        <label class="form-label">Start Date</label>
+                        <input type="date" class="form-control" th:field="*{startDate}" required>
+                    </div>
+
+                    <div class="col-md-2">
+                        <label class="form-label">End Date</label>
+                        <input type="date" class="form-control" th:field="*{endDate}" required>
+                    </div>
+
+                    <div class="col-md-2">
+                        <label class="form-label">Interval</label>
+                        <input type="number" min="1" class="form-control" th:field="*{intervalValue}" required>
+                    </div>
+
+                    <div class="col-md-2">
+                        <label class="form-label">Unit</label>
+                        <select class="form-select" th:field="*{intervalUnit}" required>
+                            <option th:each="u : ${T(org.example.financeapp.model.RecurringTask.IntervalUnit).values()}"
+                                    th:value="${u}" th:text="${u.name()}"></option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-1 d-flex align-items-end">
+                        <button type="submit" class="btn btn-primary w-100">Add</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="glass-card p-4">
+            <h5 class="mb-3 text-white">Your Recurring Payments</h5>
+
+            <div th:if="${#lists.isEmpty(tasks)}" class="text-white-50">No recurring payments yet.</div>
+
+            <div class="row g-3">
+                <div class="col-12" th:each="task : ${tasks}">
+                    <div class="glass-card p-3 recurring-item">
+                        <div class="d-flex justify-content-between align-items-start flex-wrap gap-3">
+                            <div class="flex-grow-1">
+                                <div class="d-flex align-items-center gap-2 mb-2">
+                                    <div class="fw-bold text-white fs-6" th:text="${task.title}">Spotify</div>
+                                    <span class="badge"
+                                          th:classappend="${task.active ? ' bg-success-subtle text-success-emphasis' : ' bg-secondary text-white'}"
+                                          th:text="${task.active ? 'Active' : 'Paused'}">Active</span>
+                                </div>
+
+                                <div class="recurring-meta text-muted">
+                                    <span class="me-2">
+                                        <strong th:text="${@currencyService.convert(task.amount, 'UAH', userCurrency)}">217.50</strong>
+                                        <span th:text="${userCurrency}">UAH</span>
+                                    </span>
+                                    <span class="me-2">•</span>
+                                    <span class="me-2" th:text="${task.type}">EXPENSE</span>
+                                    <span class="me-2">•</span>
+                                    <span class="me-2">
+                                        Start: <span th:text="${#temporals.format(task.startDate, 'dd.MM.yyyy')}">15.04.2026</span>
+                                    </span>
+                                    <span class="me-2">•</span>
+                                    <span class="me-2">
+                                        Next: <span th:text="${#temporals.format(task.nextRunDate, 'dd.MM.yyyy')}">15.05.2026</span>
+                                    </span>
+                                    <span class="me-2">•</span>
+                                    <span>
+                                        End: <span th:text="${#temporals.format(task.endDate, 'dd.MM.yyyy')}">22.07.2026</span>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="d-flex gap-2 flex-wrap">
+                                <form th:action="@{/recurring/run/{id}(id=${task.id})}" method="post">
+                                    <button type="submit" class="btn btn-sm btn-outline-success">Run Now</button>
+                                </form>
+                                <form th:action="@{/recurring/edit/{id}(id=${task.id})}" method="get">
+                                    <button type="submit" class="btn btn-sm btn-outline-light">Edit</button>
+                                </form>
+                                <form th:action="@{/recurring/toggle/{id}(id=${task.id})}" method="post">
+                                    <button type="submit" class="btn btn-sm btn-outline-warning"
+                                            th:text="${task.active ? 'Pause' : 'Resume'}"></button>
+                                </form>
+                                <form th:action="@{/recurring/delete/{id}(id=${task.id})}" method="post">
+                                    <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script th:inline="javascript">
+        document.addEventListener('DOMContentLoaded', function () {
+            const typeSelect = document.getElementById('recurringType');
+            const categorySelect = document.getElementById('recurringCategory');
+
+            function filterRecurringCategories() {
+                const selectedType = typeSelect.value;
+
+                Array.from(categorySelect.options).forEach(option => {
+                    if (!option.value) return;
+
+                    const optionType = option.getAttribute('data-type');
+                    option.hidden = selectedType && optionType !== selectedType;
+                });
+
+                const currentOption = categorySelect.options[categorySelect.selectedIndex];
+                if (currentOption && currentOption.hidden) {
+                    categorySelect.value = '';
+                }
+            }
+
+            typeSelect.addEventListener('change', filterRecurringCategories);
+            filterRecurringCategories();
+        });
+    </script>
+</div>
+</body>
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<body>
+
+<div th:fragment="sidebar" class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark vh-100 border-end border-secondary" style="width: 280px;">
+    <a href="/dashboard" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+        <i class="bi bi-bank me-2 fs-2"></i>
+        <span class="fs-4">FinanceApp</span>
+    </a>
+    <hr>
+    <ul class="nav nav-pills flex-column mb-auto">
+        <li class="nav-item">
+            <a href="/dashboard" class="nav-link text-white" th:classappend="${#httpServletRequest.getRequestURI() == '/dashboard' ? 'active' : ''}">
+                <i class="bi bi-grid-1x2-fill me-2"></i> Dashboard
+            </a>
+        </li>
+        <li>
+            <a href="/transactions" class="nav-link text-white" th:classappend="${#httpServletRequest.getRequestURI() == '/transactions' ? 'active' : ''}">
+                <i class="bi bi-arrow-left-right me-2"></i> Transactions
+            </a>
+        </li>
+        <li>
+            <a href="/budgets" class="nav-link text-white" th:classappend="${#httpServletRequest.getRequestURI() == '/budgets' ? 'active' : ''}">
+                <i class="bi bi-piggy-bank-fill me-2"></i> Budgets
+            </a>
+        </li>
+        <li>
+            <a href="/recurring" class="nav-link text-white" th:classappend="${#httpServletRequest.getRequestURI() == '/recurring' ? 'active' : ''}">
+                <i class="bi bi-arrow-repeat me-2"></i> Recurring
+            </a>
+        </li>
+        <li>
+            <a href="/debts" class="nav-link text-white" th:classappend="${#httpServletRequest.getRequestURI() == '/debts' ? 'active' : ''}">
+                <i class="bi bi-cash-stack me-2"></i> Debts
+            </a>
+        </li>
+        <li>
+            <a href="/settings" class="nav-link text-white" th:classappend="${#httpServletRequest.getRequestURI() == '/settings' ? 'active' : ''}">
+                <i class="bi bi-gear-fill me-2"></i> Settings
+            </a>
+        </li>
+    </ul>
+    <hr>
+    <div class="dropdown">
+        <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+            <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">
+            <strong><span sec:authentication="name"></span></strong>
+        </a>
+        <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
+            <li><a class="dropdown-item" href="/settings">Settings</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li>
+                <form th:action="@{/logout}" method="post" class="d-inline">
+                    <button type="submit" class="dropdown-item">Sign out</button>
+                </form>
+            </li>
+        </ul>
+    </div>
+</div>
+
+</body>
+</html>

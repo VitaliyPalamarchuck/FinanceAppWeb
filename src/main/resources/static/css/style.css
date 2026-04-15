@@ -1,0 +1,224 @@
+/* General Body and Background */
+body {
+    background: #111827; /* Dark background */
+    color: #e5e7eb; /* Light gray text */
+    font-family: 'Inter', sans-serif;
+}
+
+.page-shell {
+    background-image: radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.04) 1px, transparent 0);
+    background-size: 2rem 2rem;
+}
+
+/* Authentication Pages (Login/Register) */
+.auth-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    min-height: 100vh;
+}
+
+.glass-card {
+    background: rgba(31, 41, 55, 0.6); /* Semi-transparent dark gray */
+    border-radius: 16px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 2rem;
+}
+
+.auth-card {
+    width: 100%;
+    max-width: 450px;
+}
+
+.auth-card h2 {
+    color: #fff;
+    font-weight: 700;
+}
+
+.auth-card label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #9ca3af; /* Medium gray */
+    font-weight: 500;
+}
+
+.auth-card input {
+    width: 100%;
+    background: rgba(17, 24, 39, 0.8); /* Darker input background */
+    border: 1px solid #374151; /* Gray border */
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    color: #e5e7eb;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.auth-card input:focus {
+    outline: none;
+    border-color: #4f46e5; /* Indigo */
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.5);
+}
+
+.btn-indigo {
+    background-color: #4f46e5;
+    color: #fff;
+    border: none;
+    padding: 0.75rem;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.btn-indigo:hover {
+    background-color: #4338ca;
+}
+
+.alert-error {
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 1rem;
+    border: 1px solid #f5c6cb;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
+.alert-success {
+    background-color: #d4edda;
+    color: #155724;
+    padding: 1rem;
+    border: 1px solid #c3e6cb;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
+/* Sidebar and Main Content */
+.sidebar {
+    width: 260px;
+    background: #1f2937; /* Dark gray */
+    padding: 1.5rem;
+    flex-shrink: 0;
+}
+
+.sidebar .nav-link {
+    color: #9ca3af;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.sidebar .nav-link:hover, .sidebar .nav-link.active {
+    background-color: #374151;
+    color: #fff;
+}
+
+.main-content {
+    flex-grow: 1;
+    padding: 2rem;
+    overflow-y: auto;
+}
+
+.main-content.full-width {
+    padding: 0;
+}
+
+/* Existing styles from your file */
+.dashboard-container {
+    display: grid;
+    gap: 1.5rem;
+}
+
+.card-title {
+    color: #fff;
+    font-weight: 700;
+}
+
+a {
+    color: #c7d2fe; /* Light indigo for links */
+}
+
+.budget-progress {
+    height: 10px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 999px;
+    overflow: hidden;
+    box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.25);
+}
+
+.budget-progress .progress-bar {
+    border-radius: 999px;
+    transition: width 0.4s ease, background 0.4s ease, box-shadow 0.4s ease;
+}
+
+.budget-progress .bg-primary {
+    box-shadow: 0 0 8px rgba(59, 130, 246, 0.35);
+}
+
+.budget-progress .bg-info {
+    box-shadow: 0 0 10px rgba(56, 189, 248, 0.35);
+}
+
+.budget-progress .bg-warning {
+    box-shadow: 0 0 10px rgba(245, 158, 11, 0.35);
+}
+
+.budget-progress .bg-danger {
+    box-shadow: 0 0 12px rgba(239, 68, 68, 0.45);
+}
+
+.debt-progress {
+    height: 10px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 999px;
+    overflow: hidden;
+    box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.25);
+}
+
+.debt-progress .progress-bar {
+    border-radius: 999px;
+    transition: width 0.4s ease, background 0.4s ease, box-shadow 0.4s ease;
+}
+
+.debt-progress .bg-success {
+    box-shadow: 0 0 8px rgba(34, 197, 94, 0.35);
+}
+
+.debt-progress .bg-info {
+    box-shadow: 0 0 10px rgba(56, 189, 248, 0.35);
+}
+
+.debt-progress .bg-warning {
+    box-shadow: 0 0 10px rgba(245, 158, 11, 0.35);
+}
+
+.debt-progress .bg-danger {
+    box-shadow: 0 0 12px rgba(239, 68, 68, 0.45);
+}
+
+.recurring-item {
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.04);
+    backdrop-filter: blur(10px);
+}
+
+.recurring-meta {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+}
+
+.analytics-chart-scroll {
+    overflow-x: auto;
+    padding-bottom: 0.5rem;
+}
+
+.analytics-chart-wrapper {
+    min-width: 700px;
+    height: 380px;
+}

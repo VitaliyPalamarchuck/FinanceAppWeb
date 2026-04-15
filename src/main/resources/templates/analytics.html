@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <title>Analytics</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="container-fluid p-4">
+        <h1 class="h3 mb-4 text-white">Analytics</h1>
+
+        <!-- Date Range Selection Form -->
+        <div class="card mb-4" style="background: rgba(0,0,0,0.2); backdrop-filter: blur(10px); border: none;">
+            <div class="card-body">
+                <h5 class="card-title text-white">Filter by Date Range</h5>
+                <form th:action="@{/analytics}" method="get" class="row g-3 align-items-end">
+                    <div class="col-md-4">
+                        <label for="startDate" class="form-label text-white-50">Start Date</label>
+                        <input type="date" class="form-control" id="startDate" name="startDate"
+                               th:value="${startDate != null ? #temporals.format(startDate, 'yyyy-MM-dd') : ''}"
+                               style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white;">
+                    </div>
+                    <div class="col-md-4">
+                        <label for="endDate" class="form-label text-white-50">End Date</label>
+                        <input type="date" class="form-control" id="endDate" name="endDate"
+                               th:value="${endDate != null ? #temporals.format(endDate, 'yyyy-MM-dd') : ''}"
+                               style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white;">
+                    </div>
+                    <div class="col-md-4">
+                        <button type="submit" class="btn btn-primary"
+                                style="background-color: #3b82f6; border-color: #3b82f6;">Apply Filter</button>
+                        <a th:href="@{/analytics}" class="btn btn-secondary ms-2"
+                           style="background-color: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2); color: white;">Clear Filter</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xl-4 col-md-6 mb-4">
+                <div class="card h-100"
+                     style="background: linear-gradient(135deg, rgba(34, 197, 94, 0.1), rgba(34, 197, 94, 0.05)); backdrop-filter: blur(10px); border: 1px solid rgba(34, 197, 94, 0.2);">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h5 class="card-title text-success-light">Total Income</h5>
+                                <h2 class="h1 font-weight-bold text-white"
+                                    th:text="${totalIncome} + ' ' + ${userCurrency}"></h2>
+                            </div>
+                            <i class="fas fa-arrow-up fa-3x text-success-light" style="opacity: 0.5;"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-4 col-md-6 mb-4">
+                <div class="card h-100"
+                     style="background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(239, 68, 68, 0.05)); backdrop-filter: blur(10px); border: 1px solid rgba(239, 68, 68, 0.2);">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h5 class="card-title text-danger-light">Total Expenses</h5>
+                                <h2 class="h1 font-weight-bold text-white"
+                                    th:text="${totalExpenses} + ' ' + ${userCurrency}"></h2>
+                            </div>
+                            <i class="fas fa-arrow-down fa-3x text-danger-light" style="opacity: 0.5;"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-4 col-md-12 mb-4">
+                <div class="card h-100"
+                     style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(59, 130, 246, 0.05)); backdrop-filter: blur(10px); border: 1px solid rgba(59, 130, 246, 0.2);">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h5 class="card-title text-primary-light">Net Balance</h5>
+                                <h2 class="h1 font-weight-bold text-white"
+                                    th:text="${netBalance} + ' ' + ${userCurrency}"></h2>
+                            </div>
+                            <i class="fas fa-balance-scale fa-3x text-primary-light" style="opacity: 0.5;"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-6 mb-4">
+                <div class="card"
+                     style="background: rgba(0,0,0,0.2); backdrop-filter: blur(10px); border: none;">
+                    <div class="card-body">
+                        <h5 class="card-title">Expenses by Category</h5>
+                        <div class="chart-container" style="position: relative; height:30vh; width:30vw; margin: auto;">
+                            <canvas id="expenseChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 mb-4">
+                <div class="card"
+                     style="background: rgba(0,0,0,0.2); backdrop-filter: blur(10px); border: none;">
+                    <div class="card-body">
+                        <h5 class="card-title">Income by Category</h5>
+                        <div class="chart-container" style="position: relative; height:30vh; width:30vw; margin: auto;">
+                            <canvas id="incomeChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card mt-4" style="background: rgba(0,0,0,0.2); backdrop-filter: blur(10px); border: none;">
+            <div class="card-body">
+                <h5 class="card-title">Monthly Summary</h5>
+                <div class="analytics-chart-scroll">
+                    <div class="analytics-chart-wrapper" style="min-width: 700px; height: 380px;">
+                        <canvas id="monthlySummaryChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        function getNeonPalette(count) {
+            const palette = [
+                '#00FFFF', // Cyan
+                '#FF00FF', // Magenta
+                '#00FF00', // Neon Green
+                '#FFD700', // Amber
+                '#9400D3', // Purple
+                '#00BFFF'  // Electric Blue
+            ];
+            const colors = [];
+            for (let i = 0; i < count; i++) {
+                colors.push(palette[i % palette.length]);
+            }
+            return colors;
+        }
+
+        // Expense Chart
+        const expenseCtx = document.getElementById('expenseChart').getContext('2d');
+        const expenseData = /*[[${expenseByCategory}]]*/ [];
+        new Chart(expenseCtx, {
+            type: 'doughnut',
+            data: {
+                labels: expenseData.map(d => d.label),
+                datasets: [{
+                    data: expenseData.map(d => d.value),
+                    backgroundColor: getNeonPalette(expenseData.length),
+                    borderColor: 'rgba(0,0,0,0.5)',
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false, // Added to allow custom sizing
+                plugins: {
+                    legend: {
+                        position: 'right',
+                        labels: {
+                            color: '#fff'
+                        }
+                    }
+                }
+            }
+        });
+
+        // Income Chart
+        const incomeCtx = document.getElementById('incomeChart').getContext('2d');
+        const incomeData = /*[[${incomeByCategory}]]*/ [];
+        new Chart(incomeCtx, {
+            type: 'doughnut',
+            data: {
+                labels: incomeData.map(d => d.label),
+                datasets: [{
+                    data: incomeData.map(d => d.value),
+                    backgroundColor: getNeonPalette(incomeData.length),
+                    borderColor: 'rgba(0,0,0,0.5)',
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false, // Added to allow custom sizing
+                plugins: {
+                    legend: {
+                        position: 'right',
+                        labels: {
+                            color: '#fff'
+                        }
+                    }
+                }
+            }
+        });
+
+        // Monthly Summary Chart
+        const monthlyCtx = document.getElementById('monthlySummaryChart').getContext('2d');
+        const monthlyData = /*[[${monthlySummary}]]*/ [];
+        new Chart(monthlyCtx, {
+            type: 'bar',
+            data: {
+                labels: monthlyData.map(d => d.monthLabel),
+                datasets: [
+                    {
+                        label: 'Income',
+                        data: monthlyData.map(d => d.income),
+                        backgroundColor: 'rgba(34, 197, 94, 0.5)',
+                        borderColor: 'rgba(34, 197, 94, 1)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Expenses',
+                        data: monthlyData.map(d => d.expenses),
+                        backgroundColor: 'rgba(239, 68, 68, 0.5)',
+                        borderColor: 'rgba(239, 68, 68, 1)',
+                        borderWidth: 1
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        ticks: { color: '#fff' },
+                        grid: { color: 'rgba(255,255,255,0.1)' }
+                    },
+                    y: {
+                        ticks: { color: '#fff' },
+                        grid: { color: 'rgba(255,255,255,0.1)' }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: '#fff'
+                        }
+                    }
+                }
+            }
+        });
+        /*]]>*/
+    </script>
+</div>
+</body>
+</html>
