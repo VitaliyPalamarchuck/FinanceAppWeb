@@ -3,35 +3,18 @@ package org.example.financeapp.config;
 import org.example.financeapp.model.Category;
 import org.example.financeapp.model.User;
 import org.example.financeapp.repository.CategoryRepository;
-import org.example.financeapp.repository.UserRepository;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Component
-public class DataInitializer implements CommandLineRunner {
+public class DataInitializer {
 
-    private final UserRepository userRepository;
     private final CategoryRepository categoryRepository;
 
-    public DataInitializer(UserRepository userRepository, CategoryRepository categoryRepository) {
-        this.userRepository = userRepository;
+    public DataInitializer(CategoryRepository categoryRepository) {
         this.categoryRepository = categoryRepository;
     }
 
-    @Override
-    @Transactional
-    public void run(String... args) {
-        List<User> users = userRepository.findAll();
-
-        for (User user : users) {
-            ensureDefaultCategories(user);
-        }
-    }
-
-    private void ensureDefaultCategories(User user) {
+    public void ensureDefaultCategories(User user) {
         createIfMissing(user, "Salary", Category.CategoryType.INCOME, "fa-solid fa-wallet", "#22c55e");
         createIfMissing(user, "Freelance", Category.CategoryType.INCOME, "fa-solid fa-briefcase", "#10b981");
         createIfMissing(user, "Investments", Category.CategoryType.INCOME, "fa-solid fa-chart-line", "#14b8a6");

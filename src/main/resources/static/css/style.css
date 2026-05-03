@@ -3,6 +3,11 @@ body {
     background: #111827; /* Dark background */
     color: #e5e7eb; /* Light gray text */
     font-family: 'Inter', sans-serif;
+
+    --bs-body-color: #ffffff;
+    --bs-secondary-color: rgba(255, 255, 255, 0.78);
+    --bs-tertiary-color: rgba(255, 255, 255, 0.65);
+    --bs-emphasis-color: #ffffff;
 }
 
 .page-shell {
@@ -121,6 +126,36 @@ body {
     overflow-y: auto;
 }
 
+.main-content,
+.main-content p,
+.main-content span,
+.main-content div,
+.main-content small,
+.main-content .small,
+.main-content .text-muted,
+.main-content .text-body-secondary,
+.main-content .text-body-tertiary {
+    color: #ffffff !important;
+}
+
+.text-muted {
+    color: #ffffff !important;
+}
+
+.glass-card .text-muted,
+.glass-card .small,
+.glass-card p,
+.glass-card span {
+    color: #ffffff !important;
+}
+
+.budget-status-text,
+.budget-status-text span,
+.budget-status-period,
+.budget-status-period span {
+    color: #ffffff !important;
+}
+
 .main-content.full-width {
     padding: 0;
 }
@@ -138,6 +173,54 @@ body {
 
 a {
     color: #c7d2fe; /* Light indigo for links */
+}
+
+.text-muted {
+    color: rgba(255, 255, 255, 0.75) !important;
+}
+
+.text-dark {
+    color: #ffffff !important;
+}
+
+.glass-card,
+.glass-card p,
+.glass-card span,
+.glass-card div,
+.glass-card label,
+.glass-card .small,
+.glass-card .card-title {
+    color: #ffffff;
+}
+
+.card {
+    color: #ffffff;
+}
+
+.card .card-title,
+.card p,
+.card span,
+.card div,
+.card label,
+.card .small {
+    color: #ffffff;
+}
+
+.form-label {
+    color: #ffffff;
+}
+
+.text-white-50 {
+    color: rgba(255, 255, 255, 0.7) !important;
+}
+
+::selection {
+    background: rgba(59, 130, 246, 0.65);
+    color: #ffffff;
+}
+
+.glass-card .text-muted {
+    color: rgba(255, 255, 255, 0.72) !important;
 }
 
 .budget-progress {
@@ -212,6 +295,13 @@ a {
     flex-wrap: wrap;
     gap: 0.25rem;
 }
+
+.recurring-meta-light,
+.recurring-meta-light strong,
+.recurring-meta-light span {
+    color: #ffffff !important;
+}
+
 
 .analytics-chart-scroll {
     overflow-x: auto;

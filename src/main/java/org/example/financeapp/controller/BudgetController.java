@@ -99,6 +99,7 @@ public class BudgetController {
 
         BigDecimal limitInUah = currencyService.convert(newBudget.getLimitAmount(), currency, "UAH");
         newBudget.setLimitAmount(limitInUah);
+        newBudget.setYear(LocalDate.now().getYear());
         newBudget.setUser(user);
 
         budgetRepository.save(newBudget);

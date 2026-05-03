@@ -59,7 +59,7 @@ public class RecurringTaskService {
         transaction.setDate(executionDate);
         transaction.setUser(task.getUser());
         transaction.setCategory(task.getCategory());
-        transaction.setAmount(currencyService.convert(task.getAmount(), task.getCurrency(), "UAH"));
+        transaction.setAmount(task.getAmount());
 
         transactionRepository.save(transaction);
 

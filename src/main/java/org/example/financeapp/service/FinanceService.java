@@ -48,7 +48,12 @@ public class FinanceService {
     }
 
     public List<BudgetStatusDTO> getBudgetStatus(Long userId) {
-        List<Budget> budgets = budgetRepository.findByUserId(userId);
+        LocalDate today = LocalDate.now();
+
+        List<Budget> budgets = budgetRepository.findByUserId(userId).stream()
+                .filter(budget -> budget.getMonth() == today.getMonthValue())
+                .filter(budget -> budget.getYear() == today.getYear())
+                .toList();
 
         return budgets.stream().map(budget -> {
             List<Transaction> monthTransactions = transactionRepository.findByUserId(userId).stream()

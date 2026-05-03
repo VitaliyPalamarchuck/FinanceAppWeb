@@ -32,7 +32,7 @@
                         </div>
 
                         <div class="row g-3">
-                            <div class="col-4">
+                            <div class="col-6">
                                 <label for="month" class="form-label">Month</label>
                                 <select class="form-select" id="month" th:field="*{month}" required>
                                     <option th:each="entry : ${monthOptions.entrySet()}"
@@ -43,12 +43,7 @@
                                 </select>
                             </div>
 
-                            <div class="col-4">
-                                <label for="year" class="form-label">Year</label>
-                                <input type="number" class="form-control" id="year" th:field="*{year}" required>
-                            </div>
-
-                            <div class="col-4">
+                            <div class="col-6">
                                 <label for="limitAmount" class="form-label">Limit</label>
                                 <input type="number" step="0.01" class="form-control" id="limitAmount" th:field="*{limitAmount}" required>
                             </div>
@@ -102,11 +97,11 @@
                                 </td>
                                 <td class="text-end">
                                     <span th:text="${userCurrency}">UAH</span>
-                                    <span th:text="${@budgetController.getSpentForBudget(budget)}">0.00</span>
+                                    <span th:text="${@currencyService.convert(@budgetController.getSpentForBudget(budget), 'UAH', userCurrency)}">0.00</span>
                                 </td>
                                 <td class="text-end">
                                     <span th:text="${userCurrency}">UAH</span>
-                                    <span th:text="${@budgetController.getRemainingForBudget(budget)}">0.00</span>
+                                    <span th:text="${@currencyService.convert(@budgetController.getRemainingForBudget(budget), 'UAH', userCurrency)}">0.00</span>
                                 </td>
                                 <td>
                                     <a class="btn btn-sm btn-outline-light me-2"

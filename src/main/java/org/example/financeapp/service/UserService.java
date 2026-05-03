@@ -1,5 +1,6 @@
 package org.example.financeapp.service;
 
+import org.example.financeapp.config.DataInitializer;
 import org.example.financeapp.model.User;
 import org.example.financeapp.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -11,12 +12,17 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final DataInitializer dataInitializer;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository,
+                       PasswordEncoder passwordEncoder,
+                       DataInitializer dataInitializer) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.dataInitializer = dataInitializer;
     }
 
+    @Transactional
     public User saveUser(User user) {
         userRepository.findByUsername(user.getUsername()).ifPresent(u -> {
             throw new RuntimeException("User with this username already exists");
@@ -24,8 +30,13 @@ public class UserService {
         userRepository.findByEmail(user.getEmail()).ifPresent(u -> {
             throw new RuntimeException("User with this email already exists");
         });
+
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        return userRepository.save(user);
+        User savedUser = userRepository.save(user);
+
+        dataInitializer.ensureDefaultCategories(savedUser);
+
+        return savedUser;
     }
 
     @Transactional

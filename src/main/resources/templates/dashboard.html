@@ -17,7 +17,7 @@
                     <span th:text="${userCurrency}">UAH</span>
                     <span th:text="${totalBalance}">0.00</span>
                 </h2>
-                <p class="text-muted">Current account balance</p>
+                <p class="text-white">Current account balance</p>
             </div>
         </div>
 
@@ -28,7 +28,9 @@
                     <span th:text="${userCurrency}">UAH</span>
                     <span th:text="${income}">0.00</span>
                 </h2>
-                <p class="text-muted">for <span th:text="${#dates.format(#dates.createNow(), 'MMMM yyyy')}"></span></p>
+                <p class="text-white">
+                    for <span th:text="${#dates.format(#dates.createNow(), 'MMMM yyyy')}"></span>
+                </p>
             </div>
         </div>
 
@@ -39,26 +41,31 @@
                     <span th:text="${userCurrency}">UAH</span>
                     <span th:text="${expenses}">0.00</span>
                 </h2>
-                <p class="text-muted">for <span th:text="${#dates.format(#dates.createNow(), 'MMMM yyyy')}"></span></p>
+                <p class="text-white">
+                    for <span th:text="${#dates.format(#dates.createNow(), 'MMMM yyyy')}"></span>
+                </p>
             </div>
         </div>
     </div>
 
     <div class="glass-card mt-4">
         <h4 class="text-white mb-3">Budget Status</h4>
+
         <div th:if="${budgetStatus != null and !#lists.isEmpty(budgetStatus)}">
             <div class="mb-3" th:each="status : ${budgetStatus}">
-                <div class="d-flex justify-content-between mb-1">
+                <div class="d-flex justify-content-between mb-1 budget-status-text">
                     <span class="text-white" th:text="${status.categoryName}">Category</span>
-                    <span class="text-muted">
+                    <span class="text-white">
                         <span th:text="${userCurrency}">UAH</span>
                         <span th:text="${status.spent + ' / ' + status.limit}">0 / 0</span>
                     </span>
                 </div>
 
-                <div class="d-flex justify-content-between mb-1 text-muted small">
-                    <span th:text="${#temporals.format(status.periodStart, 'd MMMM yyyy')}">1 April 2026</span>
-                    <span th:text="${#temporals.format(status.periodEnd, 'd MMMM yyyy')}">30 April 2026</span>
+                <div class="d-flex justify-content-between mb-1 small budget-status-period">
+                    <span class="text-white"
+                          th:text="${#temporals.format(status.periodStart, 'd MMMM yyyy')}">1 April 2026</span>
+                    <span class="text-white"
+                          th:text="${#temporals.format(status.periodEnd, 'd MMMM yyyy')}">30 April 2026</span>
                 </div>
 
                 <div class="progress budget-progress">
@@ -71,5 +78,12 @@
                 </div>
             </div>
         </div>
-    <p class="text-muted mb-0" th:if="${budgetStatus == null or #lists.isEmpty(budgetStatus)}">No budget data available.</p>
+
+        <p class="text-white mb-0"
+           th:if="${budgetStatus == null or #lists.isEmpty(budgetStatus)}">
+            No budget data available.
+        </p>
+    </div>
 </div>
+</body>
+</html>

@@ -42,12 +42,16 @@ public class AnalyticsService {
                 .filter(t -> t.getType() == Transaction.TransactionType.EXPENSE)
                 .filter(t -> t.getCategory() != null)
                 .collect(Collectors.groupingBy(
-                        t -> t.getCategory().getName(),
+                        Transaction::getCategory,
                         Collectors.mapping(Transaction::getAmount,
                                 Collectors.reducing(BigDecimal.ZERO, BigDecimal::add))
                 ))
                 .entrySet().stream()
-                .map(e -> new CategoryChartDTO(e.getKey(), e.getValue()))
+                .map(e -> new CategoryChartDTO(
+                        e.getKey().getName(),
+                        e.getValue(),
+                        e.getKey().getColor_hex()
+                ))
                 .sorted(Comparator.comparing(CategoryChartDTO::getValue).reversed())
                 .toList();
     }
@@ -57,12 +61,16 @@ public class AnalyticsService {
                 .filter(t -> t.getType() == Transaction.TransactionType.INCOME)
                 .filter(t -> t.getCategory() != null)
                 .collect(Collectors.groupingBy(
-                        t -> t.getCategory().getName(),
+                        Transaction::getCategory,
                         Collectors.mapping(Transaction::getAmount,
                                 Collectors.reducing(BigDecimal.ZERO, BigDecimal::add))
                 ))
                 .entrySet().stream()
-                .map(e -> new CategoryChartDTO(e.getKey(), e.getValue()))
+                .map(e -> new CategoryChartDTO(
+                        e.getKey().getName(),
+                        e.getValue(),
+                        e.getKey().getColor_hex()
+                ))
                 .sorted(Comparator.comparing(CategoryChartDTO::getValue).reversed())
                 .toList();
     }

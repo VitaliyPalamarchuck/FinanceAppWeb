@@ -12,4 +12,5 @@ import java.math.BigDecimal;
 public class CategoryChartDTO {
     private String label;
     private BigDecimal value;
+    private String color;
 }

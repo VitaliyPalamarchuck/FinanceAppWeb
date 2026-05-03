@@ -101,7 +101,7 @@
                                           th:text="${task.active ? 'Active' : 'Paused'}">Active</span>
                                 </div>
 
-                                <div class="recurring-meta text-muted">
+                                <div class="recurring-meta recurring-meta-light">
                                     <span class="me-2">
                                         <strong th:text="${@currencyService.convert(task.amount, 'UAH', userCurrency)}">217.50</strong>
                                         <span th:text="${userCurrency}">UAH</span>

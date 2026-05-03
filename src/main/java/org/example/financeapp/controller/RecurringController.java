@@ -71,6 +71,7 @@ public class RecurringController {
 
         BigDecimal amountInUah = currencyService.convert(newTask.getAmount(), currency, "UAH");
         newTask.setAmount(amountInUah);
+        newTask.setCurrency("UAH");
         newTask.setUser(user);
 
         if (newTask.getStartDate() == null) {
@@ -128,6 +129,7 @@ public class RecurringController {
 
         task.setTitle(title);
         task.setAmount(currencyService.convert(amount, currency, "UAH"));
+        task.setCurrency("UAH");
         task.setType(type);
         task.setCategory(category);
         task.setStartDate(startDate);

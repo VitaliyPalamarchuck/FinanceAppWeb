@@ -50,8 +50,6 @@
                                 <th>Name</th>
                                 <th>Type</th>
                                 <th>Color</th>
-                                <th>Icon Class</th>
-                                <th>Actions</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -66,14 +64,9 @@
                                     <span class="d-inline-block p-2 rounded" th:style="'background-color:' + ${cat.color_hex}"></span>
                                     <span th:text="${cat.color_hex}">#22c55e</span>
                                 </td>
-                                <td th:text="${cat.icon_class}">fa-solid fa-cart-shopping</td>
-                                <td>
-                                    <button class="btn btn-sm btn-outline-light"><i class="fa-solid fa-pencil"></i></button>
-                                    <button class="btn btn-sm btn-outline-danger"><i class="fa-solid fa-trash"></i></button>
-                                </td>
                             </tr>
                             <tr th:if="${#lists.isEmpty(categories)}">
-                                <td colspan="5" class="text-center text-white-50">No custom categories found.</td>
+                                <td colspan="3" class="text-center text-white-50">No custom categories found.</td>
                             </tr>
                             </tbody>
                         </table>

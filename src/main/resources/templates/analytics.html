@@ -91,7 +91,7 @@
                 <div class="card"
                      style="background: rgba(0,0,0,0.2); backdrop-filter: blur(10px); border: none;">
                     <div class="card-body">
-                        <h5 class="card-title">Expenses by Category</h5>
+                        <h5 class="card-title text-white">Expenses by Category</h5>
                         <div class="chart-container" style="position: relative; height:30vh; width:30vw; margin: auto;">
                             <canvas id="expenseChart"></canvas>
                         </div>
@@ -102,7 +102,7 @@
                 <div class="card"
                      style="background: rgba(0,0,0,0.2); backdrop-filter: blur(10px); border: none;">
                     <div class="card-body">
-                        <h5 class="card-title">Income by Category</h5>
+                        <h5 class="card-title text-white">Income by Category</h5>
                         <div class="chart-container" style="position: relative; height:30vh; width:30vw; margin: auto;">
                             <canvas id="incomeChart"></canvas>
                         </div>
@@ -113,7 +113,7 @@
 
         <div class="card mt-4" style="background: rgba(0,0,0,0.2); backdrop-filter: blur(10px); border: none;">
             <div class="card-body">
-                <h5 class="card-title">Monthly Summary</h5>
+                <h5 class="card-title text-white">Monthly Summary</h5>
                 <div class="analytics-chart-scroll">
                     <div class="analytics-chart-wrapper" style="min-width: 700px; height: 380px;">
                         <canvas id="monthlySummaryChart"></canvas>
@@ -125,81 +125,78 @@
 
     <script th:inline="javascript">
         /*<![CDATA[*/
-        function getNeonPalette(count) {
-            const palette = [
-                '#00FFFF', // Cyan
-                '#FF00FF', // Magenta
-                '#00FF00', // Neon Green
-                '#FFD700', // Amber
-                '#9400D3', // Purple
-                '#00BFFF'  // Electric Blue
+        function getCategoryColors(data) {
+            const fallbackPalette = [
+                '#00FFFF',
+                '#FF00FF',
+                '#00FF00',
+                '#FFD700',
+                '#9400D3',
+                '#00BFFF'
             ];
-            const colors = [];
-            for (let i = 0; i < count; i++) {
-                colors.push(palette[i % palette.length]);
-            }
-            return colors;
+
+            return data.map((item, index) => {
+                if (item.color && item.color.trim() !== '') {
+                    return item.color;
+                }
+
+                return fallbackPalette[index % fallbackPalette.length];
+            });
         }
+
+        const chartOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'right',
+                    labels: {
+                        color: '#fff'
+                    }
+                }
+            }
+        };
 
         // Expense Chart
         const expenseCtx = document.getElementById('expenseChart').getContext('2d');
         const expenseData = /*[[${expenseByCategory}]]*/ [];
+
         new Chart(expenseCtx, {
             type: 'doughnut',
             data: {
                 labels: expenseData.map(d => d.label),
                 datasets: [{
                     data: expenseData.map(d => d.value),
-                    backgroundColor: getNeonPalette(expenseData.length),
+                    backgroundColor: getCategoryColors(expenseData),
                     borderColor: 'rgba(0,0,0,0.5)',
                     borderWidth: 2
                 }]
             },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false, // Added to allow custom sizing
-                plugins: {
-                    legend: {
-                        position: 'right',
-                        labels: {
-                            color: '#fff'
-                        }
-                    }
-                }
-            }
+            options: chartOptions
         });
 
         // Income Chart
         const incomeCtx = document.getElementById('incomeChart').getContext('2d');
         const incomeData = /*[[${incomeByCategory}]]*/ [];
+
         new Chart(incomeCtx, {
             type: 'doughnut',
             data: {
                 labels: incomeData.map(d => d.label),
                 datasets: [{
                     data: incomeData.map(d => d.value),
-                    backgroundColor: getNeonPalette(incomeData.length),
+                    backgroundColor: getCategoryColors(incomeData),
                     borderColor: 'rgba(0,0,0,0.5)',
                     borderWidth: 2
                 }]
             },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false, // Added to allow custom sizing
-                plugins: {
-                    legend: {
-                        position: 'right',
-                        labels: {
-                            color: '#fff'
-                        }
-                    }
-                }
-            }
+            options: chartOptions
         });
 
         // Monthly Summary Chart
         const monthlyCtx = document.getElementById('monthlySummaryChart').getContext('2d');
         const monthlyData = /*[[${monthlySummary}]]*/ [];
+
         new Chart(monthlyCtx, {
             type: 'bar',
             data: {

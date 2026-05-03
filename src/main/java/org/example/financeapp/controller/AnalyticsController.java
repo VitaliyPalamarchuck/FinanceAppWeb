@@ -45,14 +45,16 @@ public class AnalyticsController {
         List<CategoryChartDTO> expenseByCategory = analyticsService.getExpenseByCategory(user.getId(), startDate, endDate).stream()
                 .map(dto -> new CategoryChartDTO(
                         dto.getLabel(),
-                        currencyService.convert(dto.getValue(), "UAH", userCurrency)
+                        currencyService.convert(dto.getValue(), "UAH", userCurrency),
+                        dto.getColor()
                 ))
                 .toList();
 
         List<CategoryChartDTO> incomeByCategory = analyticsService.getIncomeByCategory(user.getId(), startDate, endDate).stream()
                 .map(dto -> new CategoryChartDTO(
                         dto.getLabel(),
-                        currencyService.convert(dto.getValue(), "UAH", userCurrency)
+                        currencyService.convert(dto.getValue(), "UAH", userCurrency),
+                        dto.getColor()
                 ))
                 .toList();
 
