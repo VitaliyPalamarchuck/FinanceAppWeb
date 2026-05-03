@@ -1,43 +1,43 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org"
+<html lang="uk" xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout}">
 <head>
-    <title>Transactions</title>
+    <title>Транзакції</title>
 </head>
 <body>
 
 <div layout:fragment="content">
     <div class="container-fluid">
-        <h1 class="mb-4 text-white">Manage Transactions</h1>
+        <h1 class="mb-4 text-white">Керування транзакціями</h1>
 
         <div class="glass-card p-4 mb-4">
-            <h5 class="mb-3 text-white">Add New Transaction</h5>
+            <h5 class="mb-3 text-white">Додати нову транзакцію</h5>
             <form id="transactionForm" th:action="@{/transactions}" th:object="${newTransaction}" method="post">
                 <div class="row g-3 align-items-end">
                     <div class="col-md-3">
-                        <label for="description" class="form-label">Description</label>
+                        <label for="description" class="form-label">Опис</label>
                         <input type="text" class="form-control" id="description" th:field="*{description}" required>
                     </div>
                     <div class="col-md-2">
-                        <label for="amount" class="form-label">Amount</label>
+                        <label for="amount" class="form-label">Сума</label>
                         <input type="number" step="0.01" class="form-control" id="amount" th:field="*{amount}" required>
                     </div>
                     <div class="col-md-2">
-                        <label for="date" class="form-label">Date</label>
+                        <label for="date" class="form-label">Дата</label>
                         <input type="date" class="form-control" id="date" th:field="*{date}" required>
                     </div>
                     <div class="col-md-2">
-                        <label for="type" class="form-label">Type</label>
+                        <label for="type" class="form-label">Тип</label>
                         <select class="form-select" id="type" th:field="*{type}" required>
                             <option th:each="t : ${T(org.example.financeapp.model.Transaction.TransactionType).values()}"
                                     th:value="${t}"
-                                    th:text="${t.name()}"></option>
+                                    th:text="${t.name() == 'INCOME' ? 'ДОХІД' : 'ВИТРАТА'}"></option>
                         </select>
                     </div>
 
                     <div class="col-md-1">
-                        <label for="currency" class="form-label">Currency</label>
+                        <label for="currency" class="form-label">Валюта</label>
                         <select class="form-select" id="currency" name="currency" required>
                             <option value="UAH" th:selected="${userCurrency == 'UAH'}">UAH</option>
                             <option value="USD" th:selected="${userCurrency == 'USD'}">USD</option>
@@ -46,9 +46,9 @@
                     </div>
 
                     <div class="col-md-2">
-                        <label for="category" class="form-label">Category</label>
+                        <label for="category" class="form-label">Категорія</label>
                         <select class="form-select" id="category" th:field="*{category.id}" required>
-                            <option value="">-- Select category --</option>
+                            <option value="">-- Оберіть категорію --</option>
                             <option th:each="cat : ${categories}"
                                     th:value="${cat.id}"
                                     th:text="${cat.name}"
@@ -57,40 +57,45 @@
                     </div>
 
                     <div class="col-md-1">
-                        <button type="submit" class="btn btn-primary w-100">Add</button>
+                        <button type="submit" class="btn btn-primary w-100">Додати</button>
                     </div>
                 </div>
 
                 <div id="riskAlert" class="alert alert-danger mt-3 d-none" role="alert">
-                    <strong>Risk Alert:</strong> This spending may exceed your budget for this category.
+                    <strong>Попередження:</strong> ця витрата може перевищити ваш ліміт для цієї категорії.
                 </div>
             </form>
         </div>
 
         <div class="glass-card p-4">
-            <h5 class="mb-3 text-white">Transaction History</h5>
+            <h5 class="mb-3 text-white">Історія транзакцій</h5>
+
             <div class="table-responsive">
                 <table class="table table-dark table-hover">
                     <thead>
                     <tr>
-                        <th>Date</th>
-                        <th>Description</th>
-                        <th>Category</th>
-                            <th class="text-end">Amount</th>
-                        </tr>
+                        <th>Дата</th>
+                        <th>Опис</th>
+                        <th>Категорія</th>
+                        <th class="text-end">Сума</th>
+                    </tr>
                     </thead>
                     <tbody>
-                        <tr th:each="tx : ${transactions}">
-                            <td th:text="${#temporals.format(tx.date, 'dd-MMM-yyyy')}"></td>
-                            <td th:text="${tx.description}"></td>
-                            <td><span class="badge bg-secondary" th:text="${tx.category.name}"></span></td>
-                            <td th:class="${tx.type.name() == 'INCOME' ? 'text-end text-neon-green' : 'text-end text-neon-red'}"
-                                th:text="${(tx.type.name() == 'INCOME' ? '+' : '-') + #numbers.formatDecimal(tx.amount, 1, 2)}">
-                            </td>
-                        </tr>
-                        <tr th:if="${#lists.isEmpty(transactions)}">
-                            <td colspan="4" class="text-center text-white-50">No transactions found.</td>
-                        </tr>
+                    <tr th:each="tx : ${transactions}">
+                        <td th:text="${#temporals.format(tx.date, 'dd.MM.yyyy')}">01.05.2026</td>
+                        <td th:text="${tx.description}">Опис</td>
+                        <td>
+                            <span class="badge bg-secondary" th:text="${tx.category.name}">Категорія</span>
+                        </td>
+                        <td th:class="${tx.type.name() == 'INCOME' ? 'text-end text-neon-green' : 'text-end text-neon-red'}"
+                            th:text="${(tx.type.name() == 'INCOME' ? '+' : '-') + #numbers.formatDecimal(tx.amount, 1, 2)}">
+                            0.00
+                        </td>
+                    </tr>
+
+                    <tr th:if="${#lists.isEmpty(transactions)}">
+                        <td colspan="4" class="text-center text-white-50">Транзакцій поки немає.</td>
+                    </tr>
                     </tbody>
                 </table>
             </div>
@@ -108,15 +113,12 @@
                 const selectedType = typeSelect.value;
 
                 Array.from(categorySelect.options).forEach(option => {
-                    if (!option.value) return;
+                    if (!option.value) {
+                        return;
+                    }
 
                     const optionType = option.getAttribute('data-type');
-
-                    if (!selectedType || optionType === selectedType) {
-                        option.hidden = false;
-                    } else {
-                        option.hidden = true;
-                    }
+                    option.hidden = selectedType && optionType !== selectedType;
                 });
 
                 const currentSelected = categorySelect.options[categorySelect.selectedIndex];
@@ -151,11 +153,11 @@
 
             amountInput.addEventListener('input', checkBudgetRisk);
             categorySelect.addEventListener('change', checkBudgetRisk);
-            typeSelect.addEventListener('change', checkBudgetRisk);
 
             filterCategoriesByType();
         });
     </script>
 </div>
+
 </body>
 </html>

@@ -1,33 +1,34 @@
 <!DOCTYPE html>
-<html lang="en"
+<html lang="uk"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout}">
 <head>
-    <title>Edit Budget</title>
+    <title>Редагування ліміту</title>
 </head>
 <body>
+
 <div layout:fragment="content">
     <div class="container-fluid">
-        <h1 class="mb-4 text-white">Edit Budget</h1>
+        <h1 class="mb-4 text-white">Редагування ліміту</h1>
 
         <div class="glass-card p-4" style="max-width: 700px;">
             <form th:action="@{/budgets/update}" method="post">
                 <input type="hidden" name="id" th:value="${budget.id}">
 
                 <div class="mb-3">
-                    <label for="categoryId" class="form-label">Category</label>
+                    <label for="categoryId" class="form-label">Категорія</label>
                     <select class="form-select" id="categoryId" name="categoryId" required>
                         <option th:each="cat : ${categories}"
                                 th:value="${cat.id}"
-                                th:text="${cat.name + ' (' + cat.type.name() + ')'}"
+                                th:text="${cat.name + ' (' + (cat.type.name() == 'INCOME' ? 'ДОХІД' : 'ВИТРАТА') + ')'}"
                                 th:selected="${budget.category.id == cat.id}"></option>
                     </select>
                 </div>
 
                 <div class="row g-3">
-                    <div class="col-4">
-                        <label for="month" class="form-label">Month</label>
+                    <div class="col-6">
+                        <label for="month" class="form-label">Місяць</label>
                         <select class="form-select" id="month" name="month" required>
                             <option th:each="entry : ${monthOptions.entrySet()}"
                                     th:value="${entry.key}"
@@ -37,19 +38,17 @@
                         </select>
                     </div>
 
-                    <div class="col-4">
-                        <label for="year" class="form-label">Year</label>
-                        <input type="number" class="form-control" id="year" name="year" th:value="${budget.year}" required>
-                    </div>
-
-                    <div class="col-4">
-                        <label for="limitAmount" class="form-label">Limit</label>
-                        <input type="number" step="0.01" class="form-control" id="limitAmount" name="limitAmount" th:value="${budget.limitAmount}" required>
+                    <div class="col-6">
+                        <label for="limitAmount" class="form-label">Ліміт</label>
+                        <input type="number" step="0.01" class="form-control" id="limitAmount" name="limitAmount"
+                               th:value="${@currencyService.convert(budget.limitAmount, 'UAH', userCurrency)}" required>
                     </div>
                 </div>
 
+                <input type="hidden" name="year" th:value="${budget.year}">
+
                 <div class="mt-3">
-                    <label for="currency" class="form-label">Currency</label>
+                    <label for="currency" class="form-label">Валюта</label>
                     <select class="form-select" id="currency" name="currency" required>
                         <option value="UAH" th:selected="${userCurrency == 'UAH'}">UAH</option>
                         <option value="USD" th:selected="${userCurrency == 'USD'}">USD</option>
@@ -58,12 +57,13 @@
                 </div>
 
                 <div class="d-flex gap-2 mt-4">
-                    <button type="submit" class="btn btn-primary">Update</button>
-                    <a class="btn btn-secondary" th:href="@{/budgets}">Cancel</a>
+                    <button type="submit" class="btn btn-primary">Оновити</button>
+                    <a class="btn btn-secondary" th:href="@{/budgets}">Скасувати</a>
                 </div>
             </form>
         </div>
     </div>
 </div>
+
 </body>
 </html>

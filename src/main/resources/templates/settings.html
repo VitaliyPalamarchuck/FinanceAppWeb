@@ -3,34 +3,35 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout}">
 <head>
-    <title>Settings</title>
+    <title>Налаштування</title>
 </head>
 <body>
 
 <div layout:fragment="content">
     <div class="container-fluid">
-        <h1 class="mb-4">Settings & Customization</h1>
+        <h1 class="mb-4 text-white">Налаштування</h1>
 
         <div th:if="${param.success}" class="alert alert-success">
-            Currency updated successfully.
+            Валюту успішно оновлено.
         </div>
 
         <div class="row">
             <div class="col-lg-8 mb-4">
                 <div class="glass-card p-4 h-100">
-                    <h5 class="mb-3">Manage Categories</h5>
+                    <h5 class="mb-3 text-white">Керування категоріями</h5>
 
                     <form th:action="@{/settings/categories}" th:object="${newCategory}" method="post" class="mb-4">
                         <div class="row g-3 align-items-end">
                             <div class="col-md-4">
-                                <label for="name" class="form-label">Category Name</label>
+                                <label for="name" class="form-label">Назва категорії</label>
                                 <input type="text" class="form-control" id="name" th:field="*{name}" required>
                             </div>
                             <div class="col-md-3">
-                                <label for="type" class="form-label">Type</label>
+                                <label for="type" class="form-label">Тип</label>
                                 <select class="form-select" id="type" th:field="*{type}" required>
                                     <option th:each="t : ${T(org.example.financeapp.model.Category.CategoryType).values()}"
-                                            th:value="${t}" th:text="${t.name()}"></option>
+                                            th:value="${t}"
+                                            th:text="${t.name() == 'INCOME' ? 'ДОХІД' : 'ВИТРАТА'}"></option>
                                 </select>
                             </div>
                             <div class="col-md-2">
@@ -38,7 +39,7 @@
                                 <input type="color" class="form-control form-control-color" id="color_hex" th:field="*{color_hex}" value="#3b82f6">
                             </div>
                             <div class="col-md-3">
-                                <button type="submit" class="btn btn-primary w-100">Add Category</button>
+                                <button type="submit" class="btn btn-primary w-100">Додати категорію</button>
                             </div>
                         </div>
                     </form>
@@ -47,9 +48,9 @@
                         <table class="table table-dark table-hover">
                             <thead>
                             <tr>
-                                <th>Name</th>
-                                <th>Type</th>
-                                <th>Color</th>
+                                <th>Назва</th>
+                                <th>Тип</th>
+                                <th>Колір</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -58,7 +59,7 @@
                                 <td>
                                     <span class="badge"
                                           th:classappend="${cat.type.name() == 'INCOME' ? 'bg-success' : 'bg-danger'}"
-                                          th:text="${cat.type.name()}">EXPENSE</span>
+                                          th:text="${cat.type.name() == 'INCOME' ? 'ДОХІД' : 'ВИТРАТА'}">ВИТРАТА</span>
                                 </td>
                                 <td>
                                     <span class="d-inline-block p-2 rounded" th:style="'background-color:' + ${cat.color_hex}"></span>
@@ -66,7 +67,7 @@
                                 </td>
                             </tr>
                             <tr th:if="${#lists.isEmpty(categories)}">
-                                <td colspan="3" class="text-center text-white-50">No custom categories found.</td>
+                                <td colspan="3" class="text-center text-white-50">Категорій поки немає.</td>
                             </tr>
                             </tbody>
                         </table>
@@ -76,18 +77,18 @@
 
             <div class="col-lg-4 mb-4">
                 <div class="glass-card p-4 h-100">
-                    <h5 class="mb-3">Preferences</h5>
+                    <h5 class="mb-3 text-white">Параметри</h5>
 
                     <form th:action="@{/settings/update-currency}" method="post">
                         <div class="mb-3">
-                            <label for="currency" class="form-label">Default Currency</label>
+                            <label for="currency" class="form-label">Основна валюта</label>
                             <select class="form-select" id="currency" name="currency">
-                                <option value="UAH" th:selected="${userCurrency == 'UAH'}">UAH (Ukrainian Hryvnia)</option>
-                                <option value="USD" th:selected="${userCurrency == 'USD'}">USD (United States Dollar)</option>
-                                <option value="EUR" th:selected="${userCurrency == 'EUR'}">EUR (Euro)</option>
+                                <option value="UAH" th:selected="${userCurrency == 'UAH'}">UAH (Українська гривня)</option>
+                                <option value="USD" th:selected="${userCurrency == 'USD'}">USD (Долар США)</option>
+                                <option value="EUR" th:selected="${userCurrency == 'EUR'}">EUR (Євро)</option>
                             </select>
                         </div>
-                        <button type="submit" class="btn btn-primary">Save Preferences</button>
+                        <button type="submit" class="btn btn-primary">Зберегти налаштування</button>
                     </form>
                 </div>
             </div>

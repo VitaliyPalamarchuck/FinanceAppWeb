@@ -3,53 +3,53 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout}">
 <head>
-    <title>Dashboard</title>
+    <title>Головна</title>
 </head>
 <body>
 <div layout:fragment="content">
-    <h1 class="text-white mb-4">Dashboard</h1>
+    <h1 class="text-white mb-4">Головна</h1>
 
     <div class="row g-4">
         <div class="col-md-4">
             <div class="glass-card h-100">
-                <h5 class="text-light mb-3">Total Balance</h5>
+                <h5 class="text-light mb-3">Загальний баланс</h5>
                 <h2 class="fw-bold text-white">
                     <span th:text="${userCurrency}">UAH</span>
                     <span th:text="${totalBalance}">0.00</span>
                 </h2>
-                <p class="text-white">Current account balance</p>
+                <p class="text-white">Поточний баланс рахунку</p>
             </div>
         </div>
 
         <div class="col-md-4">
             <div class="glass-card h-100">
-                <h5 class="text-light mb-3">Monthly Income</h5>
+                <h5 class="text-light mb-3">Місячний дохід</h5>
                 <h2 class="fw-bold text-white">
                     <span th:text="${userCurrency}">UAH</span>
                     <span th:text="${income}">0.00</span>
                 </h2>
                 <p class="text-white">
-                    for <span th:text="${#dates.format(#dates.createNow(), 'MMMM yyyy')}"></span>
+                    за <span th:text="${#dates.format(#dates.createNow(), 'MMMM yyyy')}"></span>
                 </p>
             </div>
         </div>
 
         <div class="col-md-4">
             <div class="glass-card h-100">
-                <h5 class="text-light mb-3">Monthly Expenses</h5>
+                <h5 class="text-light mb-3">Місячні витрати</h5>
                 <h2 class="fw-bold text-white">
                     <span th:text="${userCurrency}">UAH</span>
                     <span th:text="${expenses}">0.00</span>
                 </h2>
                 <p class="text-white">
-                    for <span th:text="${#dates.format(#dates.createNow(), 'MMMM yyyy')}"></span>
+                    за <span th:text="${#dates.format(#dates.createNow(), 'MMMM yyyy')}"></span>
                 </p>
             </div>
         </div>
     </div>
 
     <div class="glass-card mt-4">
-        <h4 class="text-white mb-3">Budget Status</h4>
+        <h4 class="text-white mb-3">Стан лімітів</h4>
 
         <div th:if="${budgetStatus != null and !#lists.isEmpty(budgetStatus)}">
             <div class="mb-3" th:each="status : ${budgetStatus}">
@@ -81,7 +81,7 @@
 
         <p class="text-white mb-0"
            th:if="${budgetStatus == null or #lists.isEmpty(budgetStatus)}">
-            No budget data available.
+            Немає даних по лімітах.
         </p>
     </div>
 </div>

@@ -3,36 +3,35 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout}">
 <head>
-    <title>Analytics</title>
+    <title>Аналітика</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 <div layout:fragment="content">
     <div class="container-fluid p-4">
-        <h1 class="h3 mb-4 text-white">Analytics</h1>
+        <h1 class="h3 mb-4 text-white">Аналітика</h1>
 
-        <!-- Date Range Selection Form -->
         <div class="card mb-4" style="background: rgba(0,0,0,0.2); backdrop-filter: blur(10px); border: none;">
             <div class="card-body">
-                <h5 class="card-title text-white">Filter by Date Range</h5>
+                <h5 class="card-title text-white">Фільтр за періодом</h5>
                 <form th:action="@{/analytics}" method="get" class="row g-3 align-items-end">
                     <div class="col-md-4">
-                        <label for="startDate" class="form-label text-white-50">Start Date</label>
+                        <label for="startDate" class="form-label text-white-50">Дата початку</label>
                         <input type="date" class="form-control" id="startDate" name="startDate"
                                th:value="${startDate != null ? #temporals.format(startDate, 'yyyy-MM-dd') : ''}"
                                style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white;">
                     </div>
                     <div class="col-md-4">
-                        <label for="endDate" class="form-label text-white-50">End Date</label>
+                        <label for="endDate" class="form-label text-white-50">Дата завершення</label>
                         <input type="date" class="form-control" id="endDate" name="endDate"
                                th:value="${endDate != null ? #temporals.format(endDate, 'yyyy-MM-dd') : ''}"
                                style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white;">
                     </div>
                     <div class="col-md-4">
                         <button type="submit" class="btn btn-primary"
-                                style="background-color: #3b82f6; border-color: #3b82f6;">Apply Filter</button>
+                                style="background-color: #3b82f6; border-color: #3b82f6;">Застосувати</button>
                         <a th:href="@{/analytics}" class="btn btn-secondary ms-2"
-                           style="background-color: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2); color: white;">Clear Filter</a>
+                           style="background-color: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2); color: white;">Очистити</a>
                     </div>
                 </form>
             </div>
@@ -45,7 +44,7 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-center">
                             <div>
-                                <h5 class="card-title text-success-light">Total Income</h5>
+                                <h5 class="card-title text-success-light">Загальний дохід</h5>
                                 <h2 class="h1 font-weight-bold text-white"
                                     th:text="${totalIncome} + ' ' + ${userCurrency}"></h2>
                             </div>
@@ -60,7 +59,7 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-center">
                             <div>
-                                <h5 class="card-title text-danger-light">Total Expenses</h5>
+                                <h5 class="card-title text-danger-light">Загальні витрати</h5>
                                 <h2 class="h1 font-weight-bold text-white"
                                     th:text="${totalExpenses} + ' ' + ${userCurrency}"></h2>
                             </div>
@@ -75,7 +74,7 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-center">
                             <div>
-                                <h5 class="card-title text-primary-light">Net Balance</h5>
+                                <h5 class="card-title text-primary-light">Чистий баланс</h5>
                                 <h2 class="h1 font-weight-bold text-white"
                                     th:text="${netBalance} + ' ' + ${userCurrency}"></h2>
                             </div>
@@ -91,7 +90,7 @@
                 <div class="card"
                      style="background: rgba(0,0,0,0.2); backdrop-filter: blur(10px); border: none;">
                     <div class="card-body">
-                        <h5 class="card-title text-white">Expenses by Category</h5>
+                        <h5 class="card-title text-white">Витрати за категоріями</h5>
                         <div class="chart-container" style="position: relative; height:30vh; width:30vw; margin: auto;">
                             <canvas id="expenseChart"></canvas>
                         </div>
@@ -102,7 +101,7 @@
                 <div class="card"
                      style="background: rgba(0,0,0,0.2); backdrop-filter: blur(10px); border: none;">
                     <div class="card-body">
-                        <h5 class="card-title text-white">Income by Category</h5>
+                        <h5 class="card-title text-white">Доходи за категоріями</h5>
                         <div class="chart-container" style="position: relative; height:30vh; width:30vw; margin: auto;">
                             <canvas id="incomeChart"></canvas>
                         </div>
@@ -113,7 +112,7 @@
 
         <div class="card mt-4" style="background: rgba(0,0,0,0.2); backdrop-filter: blur(10px); border: none;">
             <div class="card-body">
-                <h5 class="card-title text-white">Monthly Summary</h5>
+                <h5 class="card-title text-white">Місячна статистика</h5>
                 <div class="analytics-chart-scroll">
                     <div class="analytics-chart-wrapper" style="min-width: 700px; height: 380px;">
                         <canvas id="monthlySummaryChart"></canvas>
@@ -203,41 +202,20 @@
                 labels: monthlyData.map(d => d.monthLabel),
                 datasets: [
                     {
-                        label: 'Income',
+                        label: 'Доходи',
                         data: monthlyData.map(d => d.income),
                         backgroundColor: 'rgba(34, 197, 94, 0.5)',
                         borderColor: 'rgba(34, 197, 94, 1)',
                         borderWidth: 1
                     },
                     {
-                        label: 'Expenses',
+                        label: 'Витрати',
                         data: monthlyData.map(d => d.expenses),
                         backgroundColor: 'rgba(239, 68, 68, 0.5)',
                         borderColor: 'rgba(239, 68, 68, 1)',
                         borderWidth: 1
                     }
                 ]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                    x: {
-                        ticks: { color: '#fff' },
-                        grid: { color: 'rgba(255,255,255,0.1)' }
-                    },
-                    y: {
-                        ticks: { color: '#fff' },
-                        grid: { color: 'rgba(255,255,255,0.1)' }
-                    }
-                },
-                plugins: {
-                    legend: {
-                        labels: {
-                            color: '#fff'
-                        }
-                    }
-                }
             }
         });
         /*]]>*/

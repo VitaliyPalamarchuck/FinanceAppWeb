@@ -1,43 +1,43 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
 <head>
-    <title>Register</title>
+    <title>Реєстрація</title>
 </head>
 <body>
 <div layout:fragment="content" class="auth-wrapper">
     <div class="glass-card auth-card">
-        <h2 class="text-center mb-4 text-white">Register</h2>
+        <h2 class="text-center mb-4 text-white">Реєстрація</h2>
 
         <form th:action="@{/register}" method="post">
             <div th:if="${param.success}" class="alert-success">
-                Registration successful! Please log in.
+                Реєстрація успішна! Увійдіть у свій акаунт.
             </div>
             <div th:if="${param.error}" class="alert-error">
-                Error during registration. Please try again.
+                Помилка під час реєстрації. Спробуйте ще раз.
             </div>
 
             <div class="mb-3">
-                <label for="username">Username</label>
+                <label for="username">Ім’я користувача</label>
                 <input type="text" id="username" name="username" required>
             </div>
 
             <div class="mb-3">
-                <label for="email">Email</label>
+                <label for="email">Електронна пошта</label>
                 <input type="email" id="email" name="email" required>
             </div>
 
             <div class="mb-3">
-                <label for="password">Password</label>
+                <label for="password">Пароль</label>
                 <input type="password" id="password" name="password" required>
             </div>
 
             <div class="d-grid gap-2">
-                <button type="submit" class="btn-indigo">Register</button>
+                <button type="submit" class="btn-indigo">Зареєструватися</button>
             </div>
 
             <p class="text-center mt-3 text-muted">
-                Already have an account?
-                <a th:href="@{/login}">Login here</a>
+                Вже маєте акаунт?
+                <a th:href="@{/login}">Увійти</a>
             </p>
         </form>
     </div>

@@ -1,60 +1,64 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org"
+<html lang="uk" xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout}">
 <head>
-    <title>Debts</title>
+    <title>Борги</title>
 </head>
 <body>
 
 <div layout:fragment="content">
     <div class="container-fluid">
-        <h1 class="mb-4 text-white">Debt Management</h1>
+        <h1 class="mb-4 text-white">Керування боргами</h1>
 
         <div class="glass-card p-4 mb-4">
-            <h5 class="mb-3 text-white">Add New Debt Record</h5>
+            <h5 class="mb-3 text-white">Додати запис про борг</h5>
+
             <form th:action="@{/debts}" th:object="${newDebt}" method="post">
                 <div class="row g-3 align-items-end">
                     <div class="col-md-4">
-                        <label for="personName" class="form-label">Person's Name</label>
+                        <label for="personName" class="form-label">Ім’я людини</label>
                         <input type="text" class="form-control" id="personName" th:field="*{personName}" required>
                     </div>
+
                     <div class="col-md-3">
-                        <label for="amount" class="form-label">Amount</label>
+                        <label for="amount" class="form-label">Сума</label>
                         <input type="number" step="0.01" class="form-control" id="amount" th:field="*{amount}" required>
                     </div>
+
                     <div class="col-md-3">
-                        <label for="type" class="form-label">Type</label>
+                        <label for="type" class="form-label">Тип</label>
                         <select class="form-select" id="type" th:field="*{type}" required>
-                            <option value="">-- Select type --</option>
+                            <option value="">-- Оберіть тип --</option>
                             <option th:value="${T(org.example.financeapp.model.Debt.DebtType).LENT}">
-                                Money Owed to Me
+                                Мені винні
                             </option>
                             <option th:value="${T(org.example.financeapp.model.Debt.DebtType).BORROWED}">
-                                Money I Owe
+                                Я винен
                             </option>
                         </select>
                     </div>
+
                     <div class="col-md-2">
-                        <button type="submit" class="btn btn-primary w-100">Add Record</button>
+                        <button type="submit" class="btn btn-primary w-100">Додати запис</button>
                     </div>
                 </div>
             </form>
         </div>
 
         <div class="row">
-            <!-- Money Owed to Me -->
             <div class="col-lg-6 mb-4">
                 <div class="glass-card p-4 h-100">
-                    <h5 class="mb-3 text-neon-green">Money Owed to Me</h5>
+                    <h5 class="mb-3 text-neon-green">Мені винні</h5>
+
                     <div th:if="${#lists.isEmpty(lentDebts)}" class="text-center text-white-50">
-                        <p>No one owes you money.</p>
+                        <p>Вам ніхто не винен грошей.</p>
                     </div>
 
                     <div th:each="debt : ${lentDebts}" class="glass-card p-3 mb-3">
                         <div class="d-flex justify-content-between align-items-center mb-2">
                             <div>
-                                <div class="fw-bold text-white" th:text="${debt.personName}">John Doe</div>
+                                <div class="fw-bold text-white" th:text="${debt.personName}">Ім’я</div>
                                 <div class="text-neon-green">
                                     <span th:text="${debt.paidAmount}">0</span>
                                     /
@@ -63,7 +67,7 @@
                             </div>
 
                             <form th:action="@{/debts/settle/{id}(id=${debt.id})}" method="post">
-                                <button type="submit" class="btn btn-sm btn-outline-success">Settle Debt</button>
+                                <button type="submit" class="btn btn-sm btn-outline-success">Закрити борг</button>
                             </form>
                         </div>
 
@@ -77,35 +81,36 @@
                         </div>
 
                         <div class="small text-white mb-2">
-                            Remaining:
+                            Залишок:
                             <span th:text="${@debtController.getRemainingDebt(debt)}">0</span>
                         </div>
 
                         <form th:action="@{/debts/pay/{id}(id=${debt.id})}" method="post" class="row g-2 align-items-end">
                             <div class="col-md-8">
-                                <label class="form-label mb-1">Partial payment</label>
-                                <input type="number" step="0.01" name="paymentAmount" class="form-control" placeholder="Enter amount">
+                                <label class="form-label mb-1">Частковий платіж</label>
+                                <input type="number" step="0.01" name="paymentAmount" class="form-control" placeholder="Введіть суму">
                             </div>
+
                             <div class="col-md-4">
-                                <button type="submit" class="btn btn-outline-light w-100">Add Payment</button>
+                                <button type="submit" class="btn btn-outline-light w-100">Додати платіж</button>
                             </div>
                         </form>
                     </div>
                 </div>
             </div>
 
-            <!-- Money I Owe -->
             <div class="col-lg-6 mb-4">
                 <div class="glass-card p-4 h-100">
-                    <h5 class="mb-3 text-neon-red">Money I Owe</h5>
+                    <h5 class="mb-3 text-neon-red">Я винен</h5>
+
                     <div th:if="${#lists.isEmpty(borrowedDebts)}" class="text-center text-white-50">
-                        <p>You don't owe anyone money.</p>
+                        <p>Ви нікому не винні грошей.</p>
                     </div>
 
                     <div th:each="debt : ${borrowedDebts}" class="glass-card p-3 mb-3">
                         <div class="d-flex justify-content-between align-items-center mb-2">
                             <div>
-                                <div class="fw-bold text-white" th:text="${debt.personName}">Jane Smith</div>
+                                <div class="fw-bold text-white" th:text="${debt.personName}">Ім’я</div>
                                 <div class="text-neon-red">
                                     <span th:text="${debt.paidAmount}">0</span>
                                     /
@@ -114,7 +119,7 @@
                             </div>
 
                             <form th:action="@{/debts/settle/{id}(id=${debt.id})}" method="post">
-                                <button type="submit" class="btn btn-sm btn-outline-danger">Settle Debt</button>
+                                <button type="submit" class="btn btn-sm btn-outline-danger">Закрити борг</button>
                             </form>
                         </div>
 
@@ -128,17 +133,18 @@
                         </div>
 
                         <div class="small text-white mb-2">
-                            Remaining:
+                            Залишок:
                             <span th:text="${@debtController.getRemainingDebt(debt)}">0</span>
                         </div>
 
                         <form th:action="@{/debts/pay/{id}(id=${debt.id})}" method="post" class="row g-2 align-items-end">
                             <div class="col-md-8">
-                                <label class="form-label mb-1">Partial payment</label>
-                                <input type="number" step="0.01" name="paymentAmount" class="form-control" placeholder="Enter amount">
+                                <label class="form-label mb-1">Частковий платіж</label>
+                                <input type="number" step="0.01" name="paymentAmount" class="form-control" placeholder="Введіть суму">
                             </div>
+
                             <div class="col-md-4">
-                                <button type="submit" class="btn btn-outline-light w-100">Add Payment</button>
+                                <button type="submit" class="btn btn-outline-light w-100">Додати платіж</button>
                             </div>
                         </form>
                     </div>
