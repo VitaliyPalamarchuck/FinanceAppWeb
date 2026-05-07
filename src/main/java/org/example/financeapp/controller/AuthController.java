@@ -31,10 +31,10 @@ public class AuthController {
     public String registerUser(@ModelAttribute User user, RedirectAttributes redirectAttributes) {
         try {
             userService.saveUser(user);
-            redirectAttributes.addFlashAttribute("success", "Registration successful! Please login.");
+            redirectAttributes.addFlashAttribute("success", "Реєстрація успішна! Увійдіть у свій акаунт.");
             return "redirect:/login";
         } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("error", "Error during registration: " + e.getMessage());
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
             return "redirect:/register";
         }
     }

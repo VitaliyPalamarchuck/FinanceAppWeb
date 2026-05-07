@@ -24,13 +24,27 @@ public class UserService {
 
     @Transactional
     public User saveUser(User user) {
-        userRepository.findByUsername(user.getUsername()).ifPresent(u -> {
-            throw new RuntimeException("User with this username already exists");
-        });
-        userRepository.findByEmail(user.getEmail()).ifPresent(u -> {
-            throw new RuntimeException("User with this email already exists");
+        String username = user.getUsername() == null ? "" : user.getUsername().trim();
+        String email = user.getEmail() == null ? "" : user.getEmail().trim().toLowerCase();
+
+        if (username.isBlank()) {
+            throw new RuntimeException("Ім’я користувача не може бути порожнім");
+        }
+
+        if (email.isBlank()) {
+            throw new RuntimeException("Електронна пошта не може бути порожньою");
+        }
+
+        userRepository.findByUsername(username).ifPresent(u -> {
+            throw new RuntimeException("Користувач з таким логіном вже існує");
         });
 
+        userRepository.findByEmail(email).ifPresent(u -> {
+            throw new RuntimeException("Користувач з таким email вже існує");
+        });
+
+        user.setUsername(username);
+        user.setEmail(email);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         User savedUser = userRepository.save(user);
 
