@@ -126,36 +126,6 @@ body {
     overflow-y: auto;
 }
 
-.main-content,
-.main-content p,
-.main-content span,
-.main-content div,
-.main-content small,
-.main-content .small,
-.main-content .text-muted,
-.main-content .text-body-secondary,
-.main-content .text-body-tertiary {
-    color: #ffffff !important;
-}
-
-.text-muted {
-    color: #ffffff !important;
-}
-
-.glass-card .text-muted,
-.glass-card .small,
-.glass-card p,
-.glass-card span {
-    color: #ffffff !important;
-}
-
-.budget-status-text,
-.budget-status-text span,
-.budget-status-period,
-.budget-status-period span {
-    color: #ffffff !important;
-}
-
 .main-content.full-width {
     padding: 0;
 }
@@ -176,47 +146,74 @@ a {
 }
 
 .text-muted {
-    color: rgba(255, 255, 255, 0.75) !important;
+    color: #9ca3af; /* Lighter gray for muted text */
 }
 
 .text-dark {
     color: #ffffff !important;
 }
 
-.glass-card,
-.glass-card p,
-.glass-card span,
-.glass-card div,
-.glass-card label,
-.glass-card .small,
-.glass-card .card-title {
-    color: #ffffff;
-}
-
-.card {
-    color: #ffffff;
-}
-
-.card .card-title,
-.card p,
-.card span,
-.card div,
-.card label,
-.card .small {
-    color: #ffffff;
-}
-
 .form-label {
-    color: #ffffff;
+    color: #d1d5db; /* Light gray for form labels */
 }
 
-.text-white-50 {
-    color: rgba(255, 255, 255, 0.7) !important;
+/* === GLOBAL FORM STYLES FIX === */
+
+/* 1. General style for all form controls */
+.form-control,
+.form-select {
+    background-color: #ffffff !important;
+    color: #111827 !important; /* Black text for inputs */
+    border: 1px solid #d1d5db; /* Light gray border */
 }
 
-::selection {
-    background: rgba(59, 130, 246, 0.65);
-    color: #ffffff;
+/* 2. Style for focused controls */
+.form-control:focus,
+.form-select:focus {
+    border-color: #4f46e5; /* Indigo border on focus */
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.5);
+}
+
+/* 3. Placeholder text style */
+.form-control::placeholder {
+    color: #6b7280 !important; /* Slightly muted gray for placeholders */
+    opacity: 1; /* Ensure it's not transparent */
+}
+
+/* 4. Dropdown options style */
+.form-select option {
+    background-color: #ffffff;
+    color: #111827;
+}
+
+/* 5. Date input specific fixes for WebKit browsers (Chrome, Safari) */
+input[type="date"].form-control::-webkit-datetime-edit-text,
+input[type="date"].form-control::-webkit-datetime-edit-month-field,
+input[type="date"].form-control::-webkit-datetime-edit-day-field,
+input[type="date"].form-control::-webkit-datetime-edit-year-field {
+    color: #111827 !important; /* Black text for date parts */
+    opacity: 1;
+}
+
+/* 6. Fix for autofill background color in WebKit */
+.form-control:-webkit-autofill,
+.form-control:-webkit-autofill:hover,
+.form-control:-webkit-autofill:focus,
+.form-select:-webkit-autofill,
+.form-select:-webkit-autofill:hover,
+.form-select:-webkit-autofill:focus {
+    -webkit-text-fill-color: #111827 !important;
+    box-shadow: 0 0 0 1000px #ffffff inset !important;
+}
+
+/* === END OF GLOBAL FORM STYLES FIX === */
+
+
+.budget-status-text,
+.budget-status-text span,
+.budget-status-period,
+.budget-status-period span {
+    color: #ffffff !important;
 }
 
 .glass-card .text-muted {

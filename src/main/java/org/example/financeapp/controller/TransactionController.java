@@ -45,11 +45,21 @@ public class TransactionController {
         User user = userRepository.findByUsername(userDetails.getUsername()).orElseThrow();
         List<Transaction> transactions = transactionRepository.findByUserId(user.getId());
         List<Category> categories = categoryRepository.findByUserId(user.getId());
+        String userCurrency = user.getCurrency() == null || user.getCurrency().isBlank()
+                ? "UAH"
+                : user.getCurrency();
 
-        model.addAttribute("transactions", transactions);
+        List<TransactionView> transactionViews = transactions.stream()
+                .map(transaction -> new TransactionView(
+                        transaction,
+                        currencyService.convert(transaction.getAmount(), "UAH", userCurrency)
+                ))
+                .toList();
+
+        model.addAttribute("transactions", transactionViews);
         model.addAttribute("categories", categories);
         model.addAttribute("newTransaction", new Transaction());
-        model.addAttribute("userCurrency", user.getCurrency() == null ? "UAH" : user.getCurrency());
+        model.addAttribute("userCurrency", userCurrency);
 
         return "transactions";
     }
@@ -87,5 +97,8 @@ public class TransactionController {
 
         boolean exceeded = financeService.isBudgetExceeded(transaction);
         return ResponseEntity.ok().body(java.util.Map.of("exceeded", exceeded));
+    }
+
+    public record TransactionView(Transaction transaction, BigDecimal convertedAmount) {
     }
 }

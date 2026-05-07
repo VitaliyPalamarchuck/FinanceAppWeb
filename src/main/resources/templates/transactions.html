@@ -82,14 +82,14 @@
                     </thead>
                     <tbody>
                     <tr th:each="tx : ${transactions}">
-                        <td th:text="${#temporals.format(tx.date, 'dd.MM.yyyy')}">01.05.2026</td>
-                        <td th:text="${tx.description}">Опис</td>
+                        <td th:text="${#temporals.format(tx.transaction.date, 'dd.MM.yyyy')}">01.05.2026</td>
+                        <td th:text="${tx.transaction.description}">Опис</td>
                         <td>
-                            <span class="badge bg-secondary" th:text="${tx.category.name}">Категорія</span>
+                            <span class="badge bg-secondary" th:text="${tx.transaction.category.name}">Категорія</span>
                         </td>
-                        <td th:class="${tx.type.name() == 'INCOME' ? 'text-end text-neon-green' : 'text-end text-neon-red'}"
-                            th:text="${(tx.type.name() == 'INCOME' ? '+' : '-') + #numbers.formatDecimal(tx.amount, 1, 2)}">
-                            0.00
+                        <td th:class="${tx.transaction.type.name() == 'INCOME' ? 'text-end text-neon-green' : 'text-end text-neon-red'}"
+                            th:text="${(tx.transaction.type.name() == 'INCOME' ? '+' : '-') + #numbers.formatDecimal(tx.convertedAmount, 1, 2) + ' ' + userCurrency}">
+                            0.00 UAH
                         </td>
                     </tr>
 
