@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title layout:title-pattern="$CONTENT_TITLE | FinanceApp">FinanceApp</title>
+    <title layout:title-pattern="$CONTENT_TITLE | FinanceWebApp">FinanceWebApp</title>
 
     <link rel="icon" type="image/png" th:href="@{/img/logo.png}">
 
@@ -15,7 +15,7 @@
 <div class="page-shell">
     <div class="d-flex" style="min-height: 100vh;">
         <nav class="sidebar" th:if="${#authorization.expression('isAuthenticated()')}">
-            <h3 class="text-white mb-4">FinanceApp</h3>
+            <h3 class="text-white mb-4">FinanceWebApp</h3>
             <ul class="nav flex-column">
                 <li class="nav-item">
                     <a class="nav-link" th:href="@{/dashboard}">Головна</a>
