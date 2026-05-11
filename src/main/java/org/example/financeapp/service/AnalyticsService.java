@@ -18,16 +18,12 @@ import java.util.stream.Stream;
 @Service
 @Transactional
 public class AnalyticsService {
-
     private final TransactionRepository transactionRepository;
-
     public AnalyticsService(TransactionRepository transactionRepository) {
         this.transactionRepository = transactionRepository;
     }
-
     private Stream<Transaction> filterTransactionsByDate(Long userId, LocalDate startDate, LocalDate endDate) {
         Stream<Transaction> transactions = transactionRepository.findByUserId(userId).stream();
-
         if (startDate != null) {
             transactions = transactions.filter(t -> !t.getDate().isBefore(startDate));
         }
@@ -36,7 +32,6 @@ public class AnalyticsService {
         }
         return transactions;
     }
-
     public List<CategoryChartDTO> getExpenseByCategory(Long userId, LocalDate startDate, LocalDate endDate) {
         return filterTransactionsByDate(userId, startDate, endDate)
                 .filter(t -> t.getType() == Transaction.TransactionType.EXPENSE)
@@ -55,7 +50,6 @@ public class AnalyticsService {
                 .sorted(Comparator.comparing(CategoryChartDTO::getValue).reversed())
                 .toList();
     }
-
     public List<CategoryChartDTO> getIncomeByCategory(Long userId, LocalDate startDate, LocalDate endDate) {
         return filterTransactionsByDate(userId, startDate, endDate)
                 .filter(t -> t.getType() == Transaction.TransactionType.INCOME)

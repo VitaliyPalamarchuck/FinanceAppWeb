@@ -29,13 +29,11 @@ import java.util.Map;
 
 @Controller
 public class BudgetController {
-
     private final BudgetRepository budgetRepository;
     private final CategoryRepository categoryRepository;
     private final TransactionRepository transactionRepository;
     private final UserRepository userRepository;
     private final CurrencyService currencyService;
-
     public BudgetController(BudgetRepository budgetRepository,
                             CategoryRepository categoryRepository,
                             TransactionRepository transactionRepository,
@@ -47,21 +45,17 @@ public class BudgetController {
         this.userRepository = userRepository;
         this.currencyService = currencyService;
     }
-
     @GetMapping("/budgets")
     public String budgets(Model model, @AuthenticationPrincipal UserDetails userDetails) {
         User user = userRepository.findByUsername(userDetails.getUsername()).orElseThrow();
         String userCurrency = user.getCurrency() == null ? "UAH" : user.getCurrency();
-
         List<Category> expenseCategories = categoryRepository.findByUserId(user.getId()).stream()
                 .filter(category -> category.getType() == Category.CategoryType.EXPENSE)
                 .toList();
-
         List<Budget> budgets = budgetRepository.findByUserId(user.getId()).stream()
                 .filter(budget -> budget.getCategory() != null)
                 .filter(budget -> budget.getCategory().getType() == Category.CategoryType.EXPENSE)
                 .toList();
-
         Map<Integer, String> monthOptions = new LinkedHashMap<>();
         for (Month month : Month.values()) {
             monthOptions.put(

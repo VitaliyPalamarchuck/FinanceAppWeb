@@ -16,7 +16,6 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
     private final CustomUserDetailsService customUserDetailsService;
-
     public SecurityConfig(CustomUserDetailsService customUserDetailsService) {
         this.customUserDetailsService = customUserDetailsService;
     }
@@ -69,7 +68,7 @@ public class SecurityConfig {
                         .logoutSuccessUrl("/login?logout")
                         .permitAll()
                 );
-
         return http.build();
     }
 }
+

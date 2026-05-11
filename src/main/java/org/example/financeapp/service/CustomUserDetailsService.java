@@ -13,22 +13,18 @@ import java.util.Optional;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
-
     private final UserRepository userRepository;
-
     public CustomUserDetailsService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
-
     @Override
     public UserDetails loadUserByUsername(String usernameOrEmail) throws UsernameNotFoundException {
-        // Try finding by username first, then by email
+        // Пошук за іменем потім по імейлу
         Optional<User> userOptional = userRepository.findByUsername(usernameOrEmail);
         if (userOptional.isEmpty()) {
             userOptional = userRepository.findByEmail(usernameOrEmail);
         }
-
-        User user = userOptional.orElseThrow(() -> new UsernameNotFoundException("User not found with username or email: " + usernameOrEmail));
+        User user = userOptional.orElseThrow(() -> new UsernameNotFoundException("Користувач з даним імейлом або іменем не знайдений: " + usernameOrEmail));
 
         return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),
                 Collections.singletonList(new SimpleGrantedAuthority(user.getRole())));

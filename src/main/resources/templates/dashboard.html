@@ -1,14 +1,9 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout}">
-<head>
-    <title>Головна</title>
-</head>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
+<head><title>Головна</title></head>
 <body>
 <div layout:fragment="content">
     <h1 class="text-white mb-4">Головна</h1>
-
     <div class="row g-4">
         <div class="col-md-4">
             <div class="glass-card h-100">
@@ -47,10 +42,8 @@
             </div>
         </div>
     </div>
-
     <div class="glass-card mt-4">
         <h4 class="text-white mb-3">Стан лімітів</h4>
-
         <div th:if="${budgetStatus != null and !#lists.isEmpty(budgetStatus)}">
             <div class="mb-3" th:each="status : ${budgetStatus}">
                 <div class="d-flex justify-content-between mb-1 budget-status-text">
@@ -78,12 +71,9 @@
                 </div>
             </div>
         </div>
-
         <p class="text-white mb-0"
            th:if="${budgetStatus == null or #lists.isEmpty(budgetStatus)}">
             Немає даних по лімітах.
         </p>
     </div>
-</div>
-</body>
-</html>
+</div></body></html>

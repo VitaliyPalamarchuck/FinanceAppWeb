@@ -7,25 +7,19 @@ import java.math.RoundingMode;
 
 @Service
 public class CurrencyService {
-
     private final NbuCurrencyService nbuCurrencyService;
-
     public CurrencyService(NbuCurrencyService nbuCurrencyService) {
         this.nbuCurrencyService = nbuCurrencyService;
     }
-
     public BigDecimal convert(BigDecimal amount, String fromCurrency, String toCurrency) {
         if (amount == null) {
             return BigDecimal.ZERO;
         }
-
         String from = normalize(fromCurrency);
         String to = normalize(toCurrency);
-
         if (from.equals(to)) {
             return amount.setScale(2, RoundingMode.HALF_UP);
         }
-
         BigDecimal amountInUah = toUah(amount, from);
         return fromUah(amountInUah, to);
     }

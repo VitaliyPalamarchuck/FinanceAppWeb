@@ -52,7 +52,6 @@ public class UserService {
 
         return savedUser;
     }
-
     @Transactional
     public void updateUserCurrency(String username, String currency) {
         User user = userRepository.findByUsername(username)

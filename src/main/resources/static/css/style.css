@@ -1,20 +1,17 @@
-/* General Body and Background */
-body {
-    background: #111827; /* Dark background */
-    color: #e5e7eb; /* Light gray text */
-    font-family: 'Inter', sans-serif;
 
+body {
+    background: #111827;
+    color: #e5e7eb;
+    font-family: 'Inter', sans-serif;
     --bs-body-color: #ffffff;
     --bs-secondary-color: rgba(255, 255, 255, 0.78);
     --bs-tertiary-color: rgba(255, 255, 255, 0.65);
     --bs-emphasis-color: #ffffff;
 }
-
 .page-shell {
     background-image: radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.04) 1px, transparent 0);
     background-size: 2rem 2rem;
 }
-
 /* Authentication Pages (Login/Register) */
 .auth-wrapper {
     display: flex;
@@ -23,9 +20,8 @@ body {
     width: 100%;
     min-height: 100vh;
 }
-
 .glass-card {
-    background: rgba(31, 41, 55, 0.6); /* Semi-transparent dark gray */
+    background: rgba(31, 41, 55, 0.6);
     border-radius: 16px;
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
     backdrop-filter: blur(10px);
